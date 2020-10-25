@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta name="robots" content="index,follow">
+        <meta name="og:title" content="Games in Action — joyful way of learning from experience">
+        <meta name="og:description" content="We are creating games and educational sessions using them.">
+        <meta property="og:image" content="https://www.games-in-action.eu/og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:url" content="https://www.games-in-action.eu" />
+        <meta property="og:locale" content="en_GB" />
+        <meta property="og:locale:alternate" content="cs_CZ" />
+        <meta property="og:locale:alternate" content="es_ES" />
+        <meta property="og:locale:alternate" content="gl_ES" />
+        <meta property="og:locale:alternate" content="it_IT" />
+        <link rel="icon" href="favicon.png">
+        <title>Games in Action</title>
+        <link href="https://fonts.googleapis.com/css?family=Alata&subset=latin-ext&display=swap" rel="stylesheet"> 
+
+        <style>
+            * {
+                padding: 0; 
+                margin: 0;
+                font-family: 'Alata', sans-serif;
+                
+            }
+            body *{box-sizing: border-box;}
+
+            #canvas1 {
+                position: fixed;
+                top:0;
+                left: 0;
+                z-index: -1;
+            }
+
+            div.main {
+                position: relative;
+                width: 100%;
+                max-width: 620px;
+                margin: 0 auto;
+                background: rgba(255, 255, 255, 0.97);
+                padding: 12px 16px;
+
+            }
+
+            .main h3 {
+                color:royalblue;
+            }
+
+            h3:not(:first-child) {
+                margin-top: 18px;
+            }
+
+            h1 {
+                color:yellow;
+                text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black,
+                -2px 0 white, 0 2px white, 2px 0 white, 0 -2px white;
+                text-align: center;
+                margin: 32px 12px;
+            }
+
+            h1.panel {
+                display: inline-block;
+                padding: 3px 12px;
+                padding-right: 16px;
+                margin: 0;
+                background: white;
+                cursor: default;
+            }
+
+            @media(min-width: 620px) {
+                .rounded .main{
+                    border: 3px solid orange;
+                    border-radius: 12px;
+                }
+                .rounded h1.panel{
+                    border-bottom-right-radius: 12px;
+                }
+                body {
+                    padding-bottom: 30px;
+                }
+            }
+            n {
+                display: none;
+            }
+            .r,r {
+                color: red;
+                white-space: nowrap;
+            }
+            .ns {
+                user-select: none;
+                -ms-user-select: none;
+                -moz-user-select: none;
+                -webkit-user-select: none;
+            }
+            .lan {
+                position: absolute;
+                z-index: 3;
+                right: 12px;
+                color: steelblue;
+                font-size: 12px;
+                cursor: pointer;
+            }
+            body:not(.cz) cz, body:not(.en) en, body:not(.es) es, body:not(.gl) gl, body:not(.it) it {
+                display: none;
+            }
+            body.zero { 
+                overflow: hidden;
+            }
+            .loading-opacity {
+                opacity:0;
+                transition: opacity 1s ease;
+            }
+            .em {
+                cursor: pointer;
+                position: relative;
+                z-index: 1;
+                transition: opacity 0.5s ease;
+            }
+            [active] {
+                opacity: 0.5;
+            }
+            .st:hover:before {
+                position: absolute;
+                font-size: 12px;
+                margin-top: -12px;
+                color: dodgerblue;
+                background-color: white;
+                right:0;
+                content:attr(title);
+            }
+            [draggable] {
+                cursor: move;
+                z-index: 10;
+                position: absolute;
+            }
+            [right] ~ h1{
+                top: 44px;
+                position: absolute;
+                right: 0;
+            }
+            [right] ~ .main {
+                top: 107px;
+                position: absolute;
+                right: 0;
+            }
+            /* 
+            Compromising solution:
+            `position: relative` for body in Edge causing scroll behind canvas
+            scrolling in #wrap causing not hiding url bar
+            scrolling in body causing shaking of fixed elements in Edge
+            
+            #wrap is used to optimize Edge, because it doesn't like position:relative
+            that other browsers need
+            */
+            body,
+            #wrap {
+                overflow-x: hidden;
+                width: 100%;
+                position:relative;
+                height:100%;
+            }
+            html {
+                overflow:hidden;
+                height:100%;
+            }
+        </style>
+    </head>
+    <body class="zero">
+        <div id="wrap">
+        <script>
+            var lr=Math.random()<0.5?"":"right";
+            document.write('<div '+lr+'></div>');
+        </script>
+        <h1 class="panel ns" draggable>Games in Action</h1>
+        <div class="main loading-opacity" draggable>
+            <div class="lan ns">
+                <en to="cz">česky</en>
+                <cz to="en">English</cz>
+                <es to="en" name="castellano">English</es>
+                <gl to="en" name="galego">English</gl>
+                <it to="en" name="italiano">English</it>
+            </div>
+            <en>
+                <h3>Our Vision</h3>
+                <p>Having flexible and enjoyable public education reflecting personal needs of students and society.</p>
+                <h3>Our Mission</h3>
+                <p>To facilitate learning, formation of personal values and attitudes through games providing interest, motivation and personal experience.</p>
+                <h3>Our Activities</h3>
+                <p>Creation gamified sessions for secondary schools and game mastering them with debriefing.</p>
+                <h3>Contact</h3>
+                <p>Please write us at <r class="em" title="SEND EMAIL">info@games-in-act<n>REMOVE</n>ion.eu</r>.</p>
+            </en>
+            <es>
+                <h3>Nuestra visión</h3>
+                <p>Tener la educación pública flexible y agradable que refleje las necesidades personales de los estudiantes y la sociedad.</p>
+                <h3>Nuestra misión</h3>
+                <p>Para facilitar el aprendizaje, la formación de valores y actitudes personales a través de juegos que brinden interés, motivación y experiencia personal.</p>
+                <h3>Nuestras actividades</h3>
+                <p>Creación de sesiones gamificadas para escuelas secundarias y concluirlas con reuniones informativas.</p>
+                <h3>Contacto</h3>
+                <p>Escríbanos a <r class="em" title="ENVÍA UN CORREO ELECTRÓNICO">info@games-in-act<n>REMOVE</n>ion.eu</r>.</p>
+            </es>
+            <gl>
+                <h3>Nosa visión</h3>
+                <p>Ter unha educación pública flexible e divertida que reflecta as necesidades persoais dos estudantes e da sociedade.</p>
+                <h3>Nosa Misión</h3>
+                <p>Facilitar a aprendizaxe, a formación de valores e actitudes persoais mediante xogos proporcionando interese, motivación e experiencia persoal.</p>
+                <h3>Nosas actividades</h3>
+                <p>Creación de sesións gamificadas para centros de ensino secundario e concluílas con reunións informativas.</p>
+                <h3>Contacto</h3>
+                <p>Escríbenos en <r class="em" title="ENVÍA UN CORREO ELECTRÓNICO">info@games-in-act<n>REMOVE</n>ion.eu</r>.</p>
+            </gl>
+            <it>
+                <h3>Nostra visione</h3>
+                <p>Avere la educazione pubblica flessibile e divertente che rifletta le esigenze personali degli studenti e della società.</p>
+                <h3>Nostra missione</h3>
+                <p>Facilitando l'apprendimento, la formazione di valori e atteggiamenti personali attraverso giochi che forniscono interesse, motivazione ed esperienza personale.</p>
+                <h3>Nostre attività</h3>
+                <p>Creazione di sessioni gamificate per le scuole secondarie con monitoring e debriefing alla fine.</p>
+                <h3>Contatto</h3>
+                <p>Scrivici a <r class="em" title="MANDA UNA MAIL">info@games-in-act<n>RIMUOVI</n>ion.eu</r>.</p>
+            </it>
+            <cz>
+                <h3>Naše vize</h3>
+                <p>Flexibilní a příjemné veřejné vzdělávání odrážející osobní potřeby každého studenta a společnosti.</p>
+                <h3>Naše mise</h3>
+                <p>Usnadňujeme proces učení, utváření si osobních hodnot a postojů prostřednictvím her, které stimulují zájem, motivaci a vlastní zkušenost.</p>
+                <h3>Naše aktivity</h3>
+                <p>Vytváříme vzdělávací kurzy a materiály pro střední školy využívající herních principů. Proces monitorujeme a na konci pokytujeme prostor účastníkům pohybově, vizuálně nebo orálně sdílet získané zkušenosti. Pokud je třeba, vše doplníme teorií. Studenti na základě vlastní zkušenosti tvoří závěry, kterým rozumí a následně vše propojují s teorií.</p>
+                <h3>Kontakt</h3>
+                <p>V případě zájmu spolupráce s námi nás kontaktujte na <r class="em" title="POŠLI EMAIL">info@games-in-act<n>REMOVE</n>ion.eu</r>.</p>
+            </cz>
+        </div>
+
+        <canvas id="canvas1"></canvas>
+        <script type="text/javascript" src="js/eyes.js"></script>
+        <script type="text/javascript" src="js/drag.js"></script>
+        <script>
+            function init_doc(){
+                var l=navigator.language.toLocaleLowerCase();
+                document.body.className=
+                    (l.indexOf("cz")>-1)||(l.indexOf("cs")>-1)||(l.indexOf("sk")>-1)?
+                       "cz":(
+                            l.indexOf("gl")>-1?"gl":(
+                                l.indexOf("it")>-1?"it":
+                                    (l.indexOf("es")>-1?"es":"en")
+                            )
+                        ); 
+                var lo=document.getElementsByClassName("loading-opacity")
+                for(var i=0;i<lo.length;i++)lo[i].style.opacity=1;
+                var em=document.getElementsByClassName("em");
+                for(var i=0;i<em.length;i++){
+                    activate_link(em[i]);
+                }
+
+                translations();
+                dragElements();
+            }
+
+            function activate_link(l){
+                var lh=l.innerHTML;
+                lh=lh.replace(/<[a-zA-Z][^<]+<\/[a-zA-Z][^>]*>/g,"");
+                l.onclick=l.onmousedown=l.ontouchstart=function(l){
+                    this.setAttribute("active",true);
+                    if(lh.indexOf("@")>-1)
+                        window.location.href="mailto: "+lh;
+                    else 
+                        window.open(lh);
+                }
+            }
+
+            function translations(){
+                var t,n,tn,b,ch;
+                var l=document.getElementsByClassName("lan");
+                for(var i=0;i<l.length;i++){
+                    ch=l[i].children;
+                    for(var j=0;j<ch.length;j++){
+                        ch[j].onclick=ch[j].ontouchstart=ch[j].onmousedown=function(e){
+                            e = e || window.event;
+                            e.preventDefault();
+                            block_prevent=1;
+                            t=this.getAttribute("to");
+                            n=this.getAttribute("name");
+                            tn=this.nodeName.toLowerCase();
+                            b=this.parentNode.getElementsByTagName("en")[0];
+                            document.body.className=t;
+                            if(n){
+                               b.innerHTML=n;
+                               b.setAttribute("to",tn)
+                            }
+                        }
+                    
+                    }
+                }
+            }
+
+            init_doc();    
+        </script>
+        </div>
+    </body>
+</html>
