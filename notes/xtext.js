@@ -4,12 +4,20 @@ xtext = {
         return s[2] + "/" + s[1];
     },
     highlight: function (s) {
-        s = s.replace(
-            /\*+([^*\s][^*]*?)\*+(:|,|\!|\?|\.|$|\s)/g,
-            "<b>$1</b>$2"
-        );
-        s = s.replace(/"(.+?)"/g, "<b>$1</b>");
+        s = s.replace(/\*+([^*\s][^*]*?)\*+/g, "<b>$1</b>");
+        s = s.replace(/(\s+|^)"(.+?)"/g, "<b>$1</b>");
         return s;
+    },
+    center: function (s) {
+        if (s.indexOf("_center") === -1) return s;
+        return s.replace(/_center\s+(.*)/, "<center>$1</center>");
+    },
+    frame: function (s) {
+        if (s.indexOf("_frame") === -1) return s;
+        return s.replace(
+            /_frame\s*([\s\S]+?)\s*_endframe/g,
+            '<div class="frame simple">$1</div>'
+        );
     },
     price: function (s) {
         return s
@@ -99,9 +107,10 @@ xtext = {
         s = p[0];
         fixed = p[1];
         s = this.into_symbols(s);
-        var si = s.replace(/<[^\s][^>]*>/g, "").split("\n");
+        var si = this.frame(s.replace(/<[^\s][^>]*>/g, "")).split("\n");
         var ul = false;
         for (var i = 0; i < si.length; i++) {
+            si[i] = this.center(si[i]);
             si[i] = si[i].replace(
                 /(?<!(http|www|@|\/\/)\S+)_([0-9a-zA-Z]+)_?/g,
                 "<sub>$2</sub>"
