@@ -112,16 +112,18 @@ xtext = {
         for (var i = 0; i < si.length; i++) {
             si[i] = this.center(si[i]);
             //polyfill for negative lookbehind
-            si[i] = si[i].replace(/(http|www|@|\/\/)(\S+)/g, "$1$2####");
-            si[i] = si[i].replace(
-                /_([0-9a-zA-Z]+)_?(?!(\S*####))/g,
-                "<sub>$1</sub>"
-            );
-            si[i] = si[i].replace(
-                /\^([^\s^]+)\^?(?!(\S*####))/g,
-                "<sup>$1</sup>"
-            );
-            si[i] = si[i].replace(/####/g, "");
+            if (si[i].indexOf("_") > -1 || si[i].indexOf("^") > -1) {
+                si[i] = si[i].replace(/(http|www|@|\/\/)(\S+)/g, "$1$2####");
+                si[i] = si[i].replace(
+                    /_([0-9a-zA-Z]+)_?(?!(\S*####))/g,
+                    "<sub>$1</sub>"
+                );
+                si[i] = si[i].replace(
+                    /\^([^\s^]+)\^?(?!(\S*####))/g,
+                    "<sup>$1</sup>"
+                );
+                si[i] = si[i].replace(/####/g, "");
+            }
             /* negative lookbehind not supported in older browsers
             si[i] = si[i].replace(
                 /(?<!(http|www|@|\/\/)\S+)_([0-9a-zA-Z]+)_?/g,
