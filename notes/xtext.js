@@ -5,8 +5,8 @@ xtext = {
     },
     highlight: function (s) {
         s = s.replace(
-            /(^|\s)\*+([^*\s][^*]*?)\*+(:|,|\!|\?|\.|$|\s)/g,
-            "$1<b>$2</b>$3"
+            /\*+([^*\s][^*]*?)\*+(:|,|\!|\?|\.|$|\s)/g,
+            "<b>$1</b>$2"
         );
         s = s.replace(/"(.+?)"/g, "<b>$1</b>");
         return s;
@@ -71,12 +71,24 @@ xtext = {
             .replace(/<=/g, "⇒")
             .replace(/_exist/g, "∃")
             .replace(/_all/g, "∀")
-            .replace(/_map/g, "→")
+            .replace(/(_mapsto|\|->|I->)/g, "↦")
             .replace(/<->/g, "↔")
             .replace(/->/g, "→")
             .replace(/<-/g, "←")
             .replace(/_up/g, "↑")
-            .replace(/_down/g, "↓");
+            .replace(/_down/g, "↓")
+            .replace(/_union/g, "∪")
+            .replace(/_intersection/g, "∩")
+            .replace(/_subset/g, "⊆")
+            .replace(/_propersubset/g, "⊂")
+            .replace(/_notsubset/g, "⊄")
+            .replace(/_superset/g, "⊇")
+            .replace(/_propersuperset/g, "⊃")
+            .replace(/_notsuperset/g, "⊅")
+            .replace(/_in/g, "∈")
+            .replace(/_notin/g, "∉")
+            .replace(/_empty/g, "∅")
+            .replace(/_therefore/g, "∴");
     },
     format_text: function (s) {
         if (!s) return s;
