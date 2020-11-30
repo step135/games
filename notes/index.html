@@ -52,9 +52,15 @@
                 return null;
             }
             var app = document.getElementById("app");
-            app.innerHTML = "<h1>" + d.name + "</h1><div>" + (xtext.o(d.text)) + "</div>";
+            app.innerHTML = "<h1>" + d.name + tags(d.tags) + "</h1><div>" + (xtext.o(d.text)) + "</div>";
             if (typeof renderMathInElement == "function") renderMathInElement(app);
             correct_katex_overflow_on_loaded()
+        }
+
+        function tags(t) {
+            if (!t) return "";
+            t = Object.keys(t)
+            return "<span class=tags><span>" + t.join("</span> <span>") + "</span></span>";
         }
 
         function correct_katex_overflow_on_loaded() {
@@ -147,6 +153,7 @@
         }
 
         @media (max-width: 800px) {
+
             body,
             #app {
                 border: none;
@@ -164,6 +171,25 @@
 
         #app:empty {
             border: none;
+        }
+
+        .tags {
+            margin: 0 12px;
+            position: relative;
+            top: -2px;
+        }
+
+        .tags>* {
+            margin: 0 3px;
+            border: 1px solid lightgray;
+            color: gray;
+            padding: 3px 6px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            line-height: 14px;
+            display: inline-block;
+            font-family: Arial, Helvetica, sans-serif;
         }
     </style>
 </head>

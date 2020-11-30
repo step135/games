@@ -73,10 +73,20 @@ xtext = {
         return s.replace(/\/@n-line\//g, "\\\\");
     },
     into_symbols: function (si) {
+        // https://graphemica.com/
         return si
+            .replace(/<==>/g, "⟺")
+            .replace(/==>/g, "⟹")
+            .replace(/<==/g, "⟸")
+            .replace(/<-->/g, "⟷")
+            .replace(/-->/g, "⟶")
+            .replace(/<--/g, "⟵")
+            .replace(/c->/g, "⟳")
+            .replace(/d->/g, "⟲")
+            .replace(/\+->/g, "⟴")
             .replace(/<=>/g, "⇔")
             .replace(/=>/g, "⇒")
-            .replace(/<=/g, "⇒")
+            .replace(/<=/g, "⇐")
             .replace(/_exist/g, "∃")
             .replace(/_all/g, "∀")
             .replace(/(_mapsto|\|->|I->)/g, "↦")
@@ -96,7 +106,30 @@ xtext = {
             .replace(/_in/g, "∈")
             .replace(/_notin/g, "∉")
             .replace(/_empty/g, "∅")
-            .replace(/_therefore/g, "∴");
+            .replace(/_therefore/g, "∴")
+            .replace(/_sum/g, "Σ")
+            .replace(/_sum2/g, "∑")
+            .replace(/_int/g, "∫")
+            .replace(/_partial/g, "∂") //&part;
+            .replace(/_del/g, "∂")
+            .replace(/_nabla/g, "∇")
+            .replace(/_laplace/g, "Δ")
+            .replace(/_delta/g, "Δ")
+            .replace(/_triangle/g, "△")
+            .replace(/_fourier/g, "ℱ")
+            .replace(/_laplace/g, "ℒ")
+            .replace(/\+-/g, "±")
+            .replace(/_pi/g, "π")
+            .replace(/_h-bar/g, "ħ")
+            .replace(/_h-bar2/g, "ℏ")
+            .replace(/_delta/g, "δ")
+            .replace(/_ne/g, "≠")
+            .replace(/_</g, "〈")
+            .replace(/_>/g, "〉")
+            .replace(/_wedge/g, "∧")
+            .replace(/_\*/g, "◦")
+            .replace(/_isomorphic/g, "≅")
+            .replace(/_homeomorphic/g, "≃");
     },
     format_text: function (s) {
         if (!s) return s;
@@ -160,7 +193,7 @@ xtext = {
                     si[i].substr(0, 3) == "---" ||
                     si[i].substr(0, 5) == "- - -"
                 )
-                    si[i] = si[i].replace(/[- ]{3,}/, "<hr>");
+                    si[i] = si[i].replace(/[- ]{3,}$/, "<hr>");
                 if (
                     (si[i].length < 2 || !si[i][1].match(/[0-9.]/)) &&
                     (si[i][0] == "-" || si[i][0] == "*")
