@@ -45,7 +45,9 @@ xtext = {
         document.head.appendChild(s);
     },
     highlight_code(s) {
-        return typeof hljs !== "undefined" ? hljs.highlightAuto(s).value : s;
+        return typeof hljs !== "undefined"
+            ? hljs.highlightAuto(s).value
+            : this.html_encode(s);
     },
     highlight: function (s) {
         s = s.replace(/\*+([^*\s][^*]*?)\*+/g, "<b>$1</b>");
@@ -185,7 +187,7 @@ xtext = {
         var cut_array = del[1].map(
             (x) =>
                 "<pre><code class=hljs>" +
-                this.highlight_code(this.html_encode(x.replace(/^\s+/, ""))) +
+                this.highlight_code(x.replace(/^\s+/, "")) +
                 "</code></pre>"
         );
         if (cut_array.length) this.load_code_highlighter();
