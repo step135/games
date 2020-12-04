@@ -3,6 +3,9 @@ xtext = {
         var s = d.split("-");
         return s[2] + "/" + s[1];
     },
+    html_encode(s) {
+        return s.replace(/[<]+/g, "&lt;");
+    },
     cut_out_between(s, delimiter) {
         var sp = s.split(delimiter);
         var removed = [];
@@ -16,9 +19,10 @@ xtext = {
         }
         return [s, removed];
     },
-    add_cuts(s, cuts) {
+    add_cuts(s, cuts, delim) {
+        if (typeof delim === "undefined") delim = "";
         for (var i = 0; i < cuts.length; i++)
-            s = s.replace("$cut-" + (i + 1), cuts[i]);
+            s = s.replace("$cut-" + (i + 1), delim + cuts[i] + delim);
         return s;
     },
     load_code_highlighter() {
@@ -181,7 +185,7 @@ xtext = {
         var cut_array = del[1].map(
             (x) =>
                 "<pre><code class=hljs>" +
-                this.highlight_code(x.replace(/^\s+/, "")) +
+                this.highlight_code(this.html_encode(x.replace(/^\s+/, ""))) +
                 "</code></pre>"
         );
         if (cut_array.length) this.load_code_highlighter();
