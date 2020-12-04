@@ -142,6 +142,25 @@
             font-family: "DejaVu Serif", "DejaVuMathTeXGyre-Regular", "Avenir", Helvetica, Arial, sans-serif;
         }
 
+        qe {
+            display: inline-block;
+            position: relative;
+        }
+
+        qe:before {
+            content: "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+            font-size: 0.6em;
+            font-weight: 700;
+            font-family: Times New Roman, Serif;
+            color: red;
+            width: 100%;
+            position: absolute;
+            top: 8px;
+            left: -1px;
+            overflow: hidden;
+            z-index: -1;
+        }
+
         #app {
             max-width: 800px;
             margin: 0 auto;

@@ -3,9 +3,52 @@ xtext = {
         var s = d.split("-");
         return s[2] + "/" + s[1];
     },
+    cut_out_between(s, delimiter) {
+        var sp = s.split(delimiter);
+        var removed = [];
+        s = "";
+        for (var i = 0; i < sp.length; i++) {
+            if (i % 2 === 0) s += sp[i];
+            else {
+                s += i ? "$cut-" + (i + 1) / 2 : "";
+                removed.push(sp[i]);
+            }
+        }
+        return [s, removed];
+    },
+    add_cuts(s, cuts) {
+        for (var i = 0; i < cuts.length; i++)
+            s = s.replace("$cut-" + (i + 1), cuts[i]);
+        return s;
+    },
+    load_code_highlighter() {
+        if (typeof hljs != "undefined") {
+            setTimeout(hljs.initHighlighting, 100);
+            return;
+        }
+        var s = document.createElement("script");
+        s.src =
+            "https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.4.1/build/highlight.min.js";
+        document.body.appendChild(s);
+        s.setAttribute(
+            "onload",
+            "hljs.initHighlighting();" + "setTimeout(hljs.initHighlighting,400)"
+        );
+        s = document.createElement("link");
+        s.rel = "stylesheet";
+        s.href =
+            "https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.4.1/build/styles/default.min.css";
+        document.head.appendChild(s);
+    },
+    highlight_code(s) {
+        return typeof hljs !== "undefined" ? hljs.highlightAuto(s).value : s;
+    },
     highlight: function (s) {
         s = s.replace(/\*+([^*\s][^*]*?)\*+/g, "<b>$1</b>");
-        s = s.replace(/(\s+|^)"(.+?)"/g, "<b>$1</b>");
+        // https://css-tricks.com/quoting-in-html-quotations-citations-and-blockquotes/
+        // https://stackoverflow.com/questions/35948102/how-to-create-a-border-bottom-in-css-using-a-text-character-such-as-a-dash-lett
+        // https://stackoverflow.com/questions/28152175/a-wavy-underline-in-css
+        s = s.replace(/(\s+|^)"(.+?)"/g, "$1<q>$2</q>");
         return s;
     },
     center: function (s) {
@@ -133,6 +176,20 @@ xtext = {
     },
     format_text: function (s) {
         if (!s) return s;
+        var del = this.cut_out_between(s, "```");
+        s = del[0];
+        var cut_array = del[1].map(
+            (x) =>
+                "<pre><code class=hljs>" +
+                this.highlight_code(x.replace(/^\s+/, "")) +
+                "</code></pre>"
+        );
+        if (cut_array.length) this.load_code_highlighter();
+        console.log("cut_array", cut_array);
+        s = s
+            .replace(/\r/g, "")
+            .replace(/^\s+|\s+$/g, "")
+            .replace(/\$\$\$\$/g, "");
         s = s.replace(/\r/g, "").replace(/^\s+|\s+$/g, "");
         var fixed = [];
         var rc = this.replace_fixed;
@@ -230,6 +287,9 @@ xtext = {
             si = this.put_fixed(si, fixed);
         }
         //si=this.add_math_symbols(si);
+        if (cut_array.length) {
+            si = this.add_cuts(si, cut_array);
+        }
         return si;
     },
     o: function (t) {
