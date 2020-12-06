@@ -44,9 +44,18 @@ xtext = {
             "https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.4.1/build/styles/default.min.css";
         document.head.appendChild(s);
     },
-    highlight_code(s) {
+    highlight_code(s, lan) {
         return typeof hljs !== "undefined"
-            ? hljs.highlightAuto(s).value
+            ? typeof lan === "undefined" || !lan
+                ? hljs.highlightAuto(s).value
+                : (function (s, lan) {
+                      try {
+                          return hljs.highlight(lan, s).value;
+                      } catch (e) {
+                          console.log("hljs.highlight error", e);
+                          return s;
+                      }
+                  })(s, lan)
             : this.html_encode(s);
     },
     highlight: function (s) {
@@ -184,12 +193,18 @@ xtext = {
         if (!s) return s;
         var del = this.cut_out_between(s, "```");
         s = del[0];
-        var cut_array = del[1].map(
-            (x) =>
-                "<pre><code class=hljs>" +
-                this.highlight_code(x.replace(/^\s+/, "")) +
+        var cut_array = del[1].map((x) => {
+            var language = x.match(/^(\S+)\n/);
+            if (language) language = language[1];
+            x = x.replace(/^(\S+)\n/, "");
+            return (
+                '<pre><code class="hljs ' +
+                language +
+                '">' +
+                this.highlight_code(x.replace(/^\s+/, ""), language) +
                 "</code></pre>"
-        );
+            );
+        });
         if (cut_array.length) this.load_code_highlighter();
         console.log("cut_array", cut_array);
         s = s
