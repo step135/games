@@ -52,7 +52,7 @@
                 return null;
             }
             var app = document.getElementById("app");
-            app.innerHTML = "<h1>" + d.name + tags(d.tags) + "</h1><div>" + (xtext.o(d.text)) + "</div>";
+            app.innerHTML = (d.name ? "<h1>" + d.name + tags(d.tags) : "") + "</h1><div>" + (xtext.o(d.text)) + "</div>";
             if (typeof renderMathInElement == "function") renderMathInElement(app);
             correct_katex_overflow_on_loaded()
         }
