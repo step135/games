@@ -1,0 +1,364 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+<script>
+    var e=document.createElement("img")
+    e.src="https://himalayasingh.github.io/mac-reactions/img/bg-1.jpg"
+    e.onload = function () {
+        document.body.className += " ready"
+    }
+</script>
+<style>
+    body {
+        opacity: 0;
+        transition: opacity ease 1s 4s;
+    }
+
+    body.ready {
+        opacity: 1;
+    }
+</style>
+
+<style>
+    * {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+        height: 100%;
+    }
+
+    body {
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        margin: 0;
+        background-size: cover;
+        background-attachment: fixed;
+    }
+
+    #app {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        left: 0;
+        width: 100px;
+        height: 100px;
+        margin: 0 auto;
+        margin-top: -50px;
+        border-radius: 5px;
+        overflow: hidden;
+        box-shadow: 0 6px 12px -6px #232323;
+        -webkit-transition: 0.3s ease width, 0.3s ease height, 0.3s margin-top;
+        transition: 0.3s ease width, 0.3s ease height, 0.3s margin-top;
+    }
+
+    #app.active {
+        width: 310px;
+        height: 264px;
+        margin-top: -130px;
+    }
+
+    #app:before,
+    #ytd-link:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: -65px;
+        background-size: cover;
+        background-attachment: fixed;
+        -webkit-filter: blur(30px);
+        filter: blur(30px);
+    }
+
+    body,
+    #app:before,
+    #ytd-link:before {
+        background-image: url(https://himalayasingh.github.io/mac-reactions/img/bg-1.jpg);
+    }
+
+    #init-btn {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: 0 auto;
+        border-radius: 50%;
+        cursor: pointer;
+        opacity: 1;
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        -webkit-transition: 0.4s ease transform, 0.4s ease opacity;
+        transition: 0.4s ease transform, 0.4s ease opacity;
+        z-index: 1;
+    }
+
+    #app.active #init-btn {
+        opacity: 0;
+        -webkit-transform: scale(0);
+        transform: scale(0);
+    }
+
+    #init-btn:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-image: url(https://himalayasingh.github.io/mac-reactions/img/hand-1.svg);
+        background-size: cover;
+    }
+
+    #init-btn.bg-1:before {
+        background-image: url(https://himalayasingh.github.io/mac-reactions/img/1.gif);
+    }
+
+    #init-btn.bg-2:before {
+        background-image: url(https://himalayasingh.github.io/mac-reactions/img/2.gif);
+    }
+
+    #init-btn.bg-3:before {
+        background-image: url(https://himalayasingh.github.io/mac-reactions/img/3.gif);
+    }
+
+    #init-btn.bg-4:before {
+        background-image: url(https://himalayasingh.github.io/mac-reactions/img/4.gif);
+    }
+
+    #init-btn.bg-5:before {
+        background-image: url(https://himalayasingh.github.io/mac-reactions/img/5.gif);
+    }
+
+    #init-btn.bg-6:before {
+        background-image: url(https://himalayasingh.github.io/mac-reactions/img/6.gif);
+    }
+
+    #heading {
+        padding: 14px;
+        padding-left: 84px;
+        position: relative;
+        font-size: 14px;
+        height: 15px;
+        line-height: 1;
+        border-bottom: 1px solid #a0a0a0;
+        background: #fff;
+        background: rgba(255, 255, 255, 0.34);
+        background: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.7)), to(rgba(202, 202, 202, 0.7)));
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0.7), rgba(202, 202, 202, 0.7));
+        z-index: 1;
+    }
+
+    #btns {
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        background-color: #fd5754;
+        cursor: pointer;
+    }
+
+    #btns:before,
+    #btns:after {
+        content: "";
+        position: absolute;
+    }
+
+    #btns:before {
+        left: 20px;
+        background-color: #febb40;
+    }
+
+    #btns:after {
+        left: 40px;
+        background-color: #34c848;
+    }
+
+    #btns,
+    #btns:before,
+    #btns:after {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+    }
+
+    #reactions {
+        opacity: 0;
+    }
+
+    #app.active #reactions {
+        -webkit-animation: showReactions 0.3s ease 0.2s forwards;
+        animation: showReactions 0.3s ease 0.2s forwards;
+    }
+
+    @-webkit-keyframes showReactions {
+        0% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes showReactions {
+        0% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+
+    #reactions-cover {
+        opacity: 0;
+        padding: 20px;
+        overflow: hidden;
+        -webkit-transform: scale(1.2);
+        transform: scale(1.2);
+    }
+
+    #app.active #reactions-cover {
+        -webkit-animation: showReactionsCover 0.2s ease 0.3s forwards;
+        animation: showReactionsCover 0.2s ease 0.3s forwards;
+    }
+
+    @-webkit-keyframes showReactionsCover {
+        0% {
+            opacity: 0;
+            -webkit-transform: scale(1.2);
+            transform: scale(1.2);
+        }
+
+        100% {
+            opacity: 1;
+            -webkit-transform: scale(1);
+            transform: scale(1);
+        }
+    }
+
+    @keyframes showReactionsCover {
+        0% {
+            opacity: 0;
+            -webkit-transform: scale(1.2);
+            transform: scale(1.2);
+        }
+
+        100% {
+            opacity: 1;
+            -webkit-transform: scale(1);
+            transform: scale(1);
+        }
+    }
+
+    .reaction {
+        width: 80px;
+        float: left;
+        margin: 5px;
+        position: relative;
+        box-sizing: border-box;
+        border-radius: 5px;
+        overflow: hidden;
+        box-shadow: 0 1px 2px -1px #353535;
+        cursor: pointer;
+    }
+
+    .reaction:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        opacity: 0.2;
+        background-color: #fff;
+    }
+
+    .reaction img {
+        position: relative;
+        display: block;
+        width: 100%;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+</style>
+
+
+
+
+</head>
+
+<body translate="no">
+    <div id="app">
+        <div id="init-btn"></div>
+        <div id="reactions">
+            <div id="heading">
+                <div id="btns"></div>
+                Select your reaction
+            </div>
+
+            <div id="reactions-cover">
+                <div class="reaction">
+                    <img src="https://himalayasingh.github.io/mac-reactions/img/1.gif" alt="">
+                </div>
+                <div class="reaction">
+                    <img src="https://himalayasingh.github.io/mac-reactions/img/2.gif" alt="">
+                </div>
+                <div class="reaction">
+                    <img src="https://himalayasingh.github.io/mac-reactions/img/3.gif" alt="">
+                </div>
+                <div class="reaction">
+                    <img src="https://himalayasingh.github.io/mac-reactions/img/4.gif" alt="">
+                </div>
+                <div class="reaction">
+                    <img src="https://himalayasingh.github.io/mac-reactions/img/5.gif" alt="">
+                </div>
+                <div class="reaction">
+                    <img src="https://himalayasingh.github.io/mac-reactions/img/6.gif" alt="">
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script
+        src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-157cd5b220a5c80d4ff8e0e70ac069bffd87a61252088146915e8726e5d9f147.js">
+    </script>
+
+
+    <script id="rendered-js">
+        const app = document.querySelector("#app");
+        const initBtn = document.querySelector("#init-btn");
+        const reaction = document.querySelectorAll(".reaction");
+
+
+        function init() {
+            if (app.classList.contains("active"))
+                app.classList.remove("active");
+            else
+
+                app.classList.add("active");
+        }
+
+        initBtn.addEventListener("click", init);
+        reaction.forEach(function (elm, index) {
+            elm.addEventListener("click", function () {
+                initBtn.setAttribute("class", "");
+                initBtn.classList.add("bg");
+                initBtn.classList.add("bg-" + (index + 1));
+                init();
+            });
+        });
+        //# sourceURL=pen.js
+    </script>
+
+
+
+</body>
+
+</html>
