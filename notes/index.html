@@ -74,7 +74,7 @@
         }
 
         function clicked() {
-            var l = this.event.target.innerHTML;
+            var l = this.event.target.textContent;
             if (l.indexOf('http') === -1 && l.indexOf('ftp') === -1 && l[0] != '/') l = 'http://' + l;
             window.open(l);
         }
@@ -218,6 +218,10 @@
             overflow-x: auto;
             padding: .5em;
             background: #f0f0f0;
+        }
+
+        h2, h3, h4, h5 {
+            margin-bottom: 0;
         }
     </style>
 </head>
