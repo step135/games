@@ -220,9 +220,10 @@ xtext = {
         s = this.into_symbols(s);
         var si = this.frame(s.replace(/<[^\s][^>]*>/g, "")).split("\n");
         var ul = false;
+        var ol = false;
+        var sy = "";
         for (var i = 0; i < si.length; i++) {
             si[i] = this.center(si[i]);
-            //polyfill for negative lookbehind
             if (si[i].indexOf("_") > -1 || si[i].indexOf("^") > -1) {
                 si[i] = si[i].replace(/(http|www|@|\/\/)(\S+)/g, "$1$2####");
                 si[i] = si[i].replace(
@@ -236,18 +237,18 @@ xtext = {
                 si[i] = si[i].replace(/####/g, "");
             }
             /* negative lookbehind not supported in older browsers
-            si[i] = si[i].replace(
-                /(?<!(http|www|@|\/\/)\S+)_([0-9a-zA-Z]+)_?/g,
-                "<sub>$2</sub>"
-            );
-            si[i] = si[i].replace(
-                /(?<!(http|www|@|\/\/)\S+)\^([^\s^]+)\^?/g,
-                "<sup>$2</sup>"
-            );
-            */
+                si[i] = si[i].replace(
+                    /(?<!(http|www|@|\/\/)\S+)_([0-9a-zA-Z]+)_?/g,
+                    "<sub>$2</sub>"
+                );
+                si[i] = si[i].replace(
+                    /(?<!(http|www|@|\/\/)\S+)\^([^\s^]+)\^?/g,
+                    "<sup>$2</sup>"
+                );*/
             si[i] = si[i].replace(/^\s+|\s+$/, "");
             si[i] = this.highlight(si[i]);
             si[i] = this.price(si[i]);
+            console.log("si[i]", si[i]);
             si[i] = this.activate_links(si[i]);
             if (si[i][0] == "#") {
                 if (si[i][1] == "#")
@@ -256,6 +257,10 @@ xtext = {
                 if (ul) {
                     ul = false;
                     si[i] = "</ul>" + si[i];
+                }
+                if (ol) {
+                    ul = false;
+                    si[i] = "</ol>" + si[i];
                 }
                 var j = i - 1;
                 var m = [];
@@ -274,31 +279,35 @@ xtext = {
                     si[i] = si[i].replace(/[- ]{3,}$/, "<hr>");
                 if (
                     (si[i].length < 2 || !si[i][1].match(/[0-9.]/)) &&
-                    (si[i][0] == "-" || si[i][0] == "*")
+                    (si[i][0] == "-" || si[i][0] == "*" || si[i][0] == "+")
                 ) {
+                    sy = si[i][0];
                     si[i] =
                         "<li>" + si[i].slice(1).replace(/^\s*/, "") + "</li>";
-                    if (!ul) {
-                        ul = true;
-                        si[i] = "<ul>" + si[i];
+                    if (!ul && !ol) {
+                        if (sy !== "+") {
+                            ul = true;
+                            si[i] = "<ul>" + si[i];
+                        } else {
+                            ol = true;
+                            si[i] = "<ol>" + si[i];
+                        }
                     }
                     if (si.length == i + 1) {
-                        si[i] = si[i] + "</ul>";
-                        ul = false;
+                        si[i] = si[i] + (ul ? "</ul>" : "</ol>");
+                        ol = ul = false;
                     }
                 } else if (si[i]) {
                     si[i] = "<div>" + si[i] + "</div>";
                     if (ul) {
                         ul = false;
                         si[i] = "</ul>" + si[i];
+                    } else if (ol) {
+                        ol = false;
+                        si[i] = "</ol>" + si[i];
                     }
                 } else {
-                    if (ul) {
-                        ul = false;
-                        si[i] = "</ul>" + si[i];
-                    } else {
-                        si[i] = "<nl><br></nl>";
-                    }
+                    si[i] = "<nl><br></nl>";
                 }
             }
         }
