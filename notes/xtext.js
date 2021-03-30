@@ -297,8 +297,7 @@ xtext = {
                         si[i] = si[i] + (ul ? "</ul>" : "</ol>");
                         ol = ul = false;
                     }
-                } else if (si[i]) {
-                    si[i] = "<div>" + si[i] + "</div>";
+                } else {
                     if (ul) {
                         ul = false;
                         si[i] = "</ul>" + si[i];
@@ -306,8 +305,11 @@ xtext = {
                         ol = false;
                         si[i] = "</ol>" + si[i];
                     }
-                } else {
-                    si[i] = "<nl><br></nl>";
+                    if (si[i]) {
+                        si[i] = "<div>" + si[i] + "</div>";
+                    } else {
+                        si[i] = "<nl><br></nl>";
+                    }
                 }
             }
         }
