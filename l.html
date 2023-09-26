@@ -1,0 +1,7 @@
+<script>
+    var l = document.location.split("url=")
+    if(l.length>1) {
+        l = l[1].split("&")
+        window.location(decodeURIComponent(l[0]))
+    }
+</script>
