@@ -76,7 +76,7 @@
         function clicked() {
             var l = this.event.target.textContent;
             if (l.indexOf('http') === -1 && l.indexOf('ftp') === -1 && l[0] != '/') l = 'http://' + l;
-            window.open(l);
+            window.open('https://www.games-in-action.eu/l.html?url=' + encodeURIComponent(l) );
         }
     </script>
     <style id="text-format">
