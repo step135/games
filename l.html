@@ -1,8 +1,16 @@
 <!DOCTYPE html>
-<script>
-    var l = document.location.href.split("url=")
-    if(l.length>1) {
-        l = l[1].split("&")
-        document.location.href = decodeURIComponent(l[0])
-    }
-</script>
+<html>
+
+<head>
+    <meta name="referrer" content="never">
+    <meta name="referrer" content="no-referrer">
+    <script>
+        var l = document.location.href.split("url=")
+        if (l.length > 1) {
+            l = l[1].split("&")
+            document.location.href = decodeURIComponent(l[0])
+        }
+    </script>
+</head>
+
+</html>
