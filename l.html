@@ -1,5 +1,5 @@
 <script>
-    var l = document.location.split("url=")
+    var l = document.location.href.split("url=")
     if(l.length>1) {
         l = l[1].split("&")
         window.location(decodeURIComponent(l[0]))
