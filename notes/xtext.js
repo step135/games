@@ -88,7 +88,7 @@ xtext = {
     },
     activate_links: function (s) {
         return s.replace(
-            /(((https?:\/\/|www\.|ftps?:\/\/)[^\s]+\.[^\s]+[^.,?!\s]))|((www\.|fb\.com\/|bit\.ly\/)[^\s,?!/]+[^\s,?!]|[^\s,?!/]+@[^\s,?!/]+)/g,
+            /(((https?:\/\/|www\.|ftps?:\/\/)[^\s]+\.[^\s]+[^.,?!\s]))|((www\.|fb\.com\/|bit\.ly\/)[^\s,?!/]+[^\s,?!]|[^\s,?!/]@[^\s,?!/]+)/g,
             '<l onclick="clicked()">$1$4</l>'
         );
     },
@@ -199,7 +199,7 @@ xtext = {
             x = x.replace(/^(\S+)\n/, "");
             return (
                 '<pre><code class="hljs ' +
-                language +
+                (language || '') +
                 '">' +
                 this.highlight_code(x.replace(/^\s+/, ""), language) +
                 "</code></pre>"
@@ -322,7 +322,7 @@ xtext = {
         if (cut_array.length) {
             si = this.add_cuts(si, cut_array);
         }
-        return si;
+        return si.replace(/`([^\s][^`]+[^\s])`/g,"<code>$1</code>");
     },
     o: function (t) {
         return this.format_text(t);
