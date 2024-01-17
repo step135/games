@@ -6,23 +6,25 @@ xtext = {
     html_encode(s) {
         return s.replace(/[<]+/g, "&lt;");
     },
-    cut_out_between(s, delimiter) {
+    cut_out_between(s, delimiter, mark) {
+        if (typeof mark === "undefined") mark = ""
         var sp = s.split(delimiter);
+        if (sp.length % 2 != 1) return [s, []]
         var removed = [];
         s = "";
         for (var i = 0; i < sp.length; i++) {
             if (i % 2 === 0) s += sp[i];
             else {
-                s += i ? "$cut-" + (i + 1) / 2 : "";
-                removed.push(sp[i]);
+                s += i ? "$cut-" + mark + "-" + (i + 1) / 2 : "";
+                removed.push(delimiter + sp[i] + delimiter);
             }
         }
         return [s, removed];
     },
-    add_cuts(s, cuts, delim) {
-        if (typeof delim === "undefined") delim = "";
+    add_cuts(s, cuts, mark) {
+        if (typeof mark === "undefined") mark = ""
         for (var i = 0; i < cuts.length; i++)
-            s = s.replace("$cut-" + (i + 1), delim + cuts[i] + delim);
+            s = s.replace("$cut-" + mark + "-" + (i + 1), cuts[i]);
         return s;
     },
     load_code_highlighter() {
@@ -49,13 +51,13 @@ xtext = {
             ? typeof lan === "undefined" || !lan
                 ? hljs.highlightAuto(s).value
                 : (function (s, lan) {
-                      try {
-                          return hljs.highlight(lan, s).value;
-                      } catch (e) {
-                          console.log("hljs.highlight error", e);
-                          return s;
-                      }
-                  })(s, lan)
+                    try {
+                        return hljs.highlight(lan, s).value;
+                    } catch (e) {
+                        console.log("hljs.highlight error", e);
+                        return s;
+                    }
+                })(s, lan)
             : this.html_encode(s);
     },
     highlight: function (s) {
@@ -191,9 +193,10 @@ xtext = {
     },
     format_text: function (s) {
         if (!s) return s;
-        var del = this.cut_out_between(s, "```");
+        var del = this.cut_out_between(s, "```", "3");
         s = del[0];
         var cut_array = del[1].map((x) => {
+            x = x.replace(/(^```|```$)/g, "")
             var language = x.match(/^(\S+)\n/);
             if (language) language = language[1];
             x = x.replace(/^(\S+)\n/, "");
@@ -206,7 +209,15 @@ xtext = {
             );
         });
         if (cut_array.length) this.load_code_highlighter();
-        console.log("cut_array", cut_array);
+
+        var del2 = this.cut_out_between(s, "`", "1");
+        s = del2[0];
+        var cut_array2 = del2[1].map((x) => {
+            x = x.replace(/(^`|`$)/g, "")
+            return (
+                '<code>' + x + '</code>'
+            );
+        });
         s = s
             .replace(/\r/g, "")
             .replace(/^\s+|\s+$/g, "")
@@ -320,9 +331,12 @@ xtext = {
         }
         //si=this.add_math_symbols(si);
         if (cut_array.length) {
-            si = this.add_cuts(si, cut_array);
+            si = this.add_cuts(si, cut_array, "3");
         }
-        return si.replace(/`([^\s][^`]+[^\s])`/g,"<code>$1</code>");
+        if (cut_array2.length) {
+            si = this.add_cuts(si, cut_array2, "1");
+        }
+        return si.replace(/`([^\s][^`]+[^\s])`/g, "<code>$1</code>");
     },
     o: function (t) {
         return this.format_text(t);
