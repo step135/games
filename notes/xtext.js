@@ -336,7 +336,7 @@ xtext = {
         if (cut_array2.length) {
             si = this.add_cuts(si, cut_array2, "1");
         }
-        return si.replace(/`([^\s][^`]+[^\s])`/g, "<code>$1</code>");
+        return si;
     },
     o: function (t) {
         return this.format_text(t);
