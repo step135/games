@@ -112,7 +112,9 @@ xtext = {
         var f3 =
             s.match(/\\\(((?:(?!(\\\[|\$\$|\\\())(.|[\r\n]))+?)\\\)/gm) || [];
         var f4 = s.match(/```\r?\n[^`]+\r?\n```/gm) || [];
-        var f = f1.concat(f2, f3, f4);
+        // using unsupported negative lookbehind in old browsers !!!!!!!!!!!
+        var f5 = s.match(/(?<=(^|\s+))\\[^,;.? ]+/g) || [];
+        var f = f1.concat(f2, f3, f4, f5);
         for (var i = 0; i < f.length; i++) {
             s = s.replace(f[i], "@/" + i + "/@");
             f[i] = f[i].replace(
@@ -124,6 +126,7 @@ xtext = {
     },
     put_fixed: function (s, f) {
         for (var i = 0; i < f.length; i++) {
+            if (f[i][0] == "\\" && !["(", "[", "$"].includes(f[i][1])) f[i] = "\\(" + f[i] + "\\)"
             s = s
                 .replace("@/" + i + "/@", f[i].split("$").join("£"))
                 .split("£")
