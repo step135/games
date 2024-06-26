@@ -297,7 +297,7 @@ xtext = {
                 ) {
                     sy = si[i][0];
                     si[i] =
-                        "<li>" + si[i].slice(1).replace(/^\s*/, "") + "</li>";
+                        "<li" + (si[i].match(/^\s*\*/)?" class=\"star\"" : "") + ">" + si[i].slice(1).replace(/^\s*/, "") + "</li>";
                     if (!ul && !ol) {
                         if (sy !== "+") {
                             ul = true;
