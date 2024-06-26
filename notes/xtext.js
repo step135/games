@@ -236,6 +236,7 @@ xtext = {
         var ul = false;
         var ol = false;
         var sy = "";
+        var cls = "";
         for (var i = 0; i < si.length; i++) {
             si[i] = this.center(si[i]);
             if (si[i].indexOf("_") > -1 || si[i].indexOf("^") > -1) {
@@ -293,11 +294,13 @@ xtext = {
                     si[i] = si[i].replace(/[- ]{3,}$/, "<hr>");
                 if (
                     (si[i].length < 2 || !si[i][1].match(/[0-9.]/)) &&
-                    (si[i][0] == "-" || si[i][0] == "*" || si[i][0] == "+")
+                    (si[i][0] == "-" || si[i][0] == "*" || si[i][0] == "+" || si[i][0] == "~")
                 ) {
                     sy = si[i][0];
-                    si[i] =
-                        "<li" + (si[i].match(/^\s*\*/)?" class=\"star\"" : "") + ">" + si[i].slice(1).replace(/^\s*/, "") + "</li>";
+                    cls = "";
+                    if(si[i][0] == "*") cls = " class=\"star\"";
+                    if(si[i][0] == "~") cls = " class=\"continuation\"";
+                    si[i] = "<li" + cls + ">" + si[i].slice(1).replace(/^\s*/, "") + "</li>";
                     if (!ul && !ol) {
                         if (sy !== "+") {
                             ul = true;
