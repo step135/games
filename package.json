@@ -9,6 +9,7 @@
     "update:packages": "node wipe-dependencies.js && rm -rf node_modules && npm update --save-dev && npm update --save"
   },
   "dependencies": {
+    "@sentry/vue": "^8.12.0",
     "autosize": "^4.0.2",
     "core-js": "^3.7.0",
     "firebase": "^8.1.1",
