@@ -113,7 +113,8 @@ xtext = {
             s.match(/\\\(((?:(?!(\\\[|\$\$|\\\())(.|[\r\n]))+?)\\\)/gm) || [];
         var f4 = s.match(/```\r?\n[^`]+\r?\n```/gm) || [];
         // using unsupported negative lookbehind in old browsers !!!!!!!!!!!
-        var f5 = s.match(/(?<=(^|\s+))\\[^,;.? ]+/g) || [];
+        // var f5 = s.match(/(?<=(^|\s+))\\[^,;.?:'"!- ]+/g) || [];
+        var f5 = s.match(/\\[^,;.?:'"!/\- ]+/g) || [];
         var f = f1.concat(f2, f3, f4, f5);
         for (var i = 0; i < f.length; i++) {
             s = s.replace(f[i], "@/" + i + "/@");
