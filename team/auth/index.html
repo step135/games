@@ -95,22 +95,28 @@
             margin: 12px auto;
         }
 
-        .logged-in #login {
+        .logged-in #login, 
+        .loading #login {
             display: none;
         }
 
         body:not(.logged-in) #logout {
             display: none
         }
+
+        body:not(.loading) #loading {
+            display:none;
+        }
     </style>
 </head>
 
-<body>
+<body class="loading">
+    <div id="loading">loading ...</div>
     <form action="" onsubmit="enter_f(this);return false" id="login">
         <label for="email">email</label>
         <input type="email" name="email">
         <label for="password">password</label>
-        <input type="pasword" name="password">
+        <input type="password" name="password">
         <div><button type="submit">ENTER</button></div>
     </form>
     <form action="" id="logout" onsubmit="logout();return false">
