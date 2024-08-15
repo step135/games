@@ -54,6 +54,7 @@
         }
         function enter(email, password) {
             firebase.auth().signInWithEmailAndPassword(email, password)
+                .catch(function(error) { show_error() })
         }
         function logout() {
             firebase.auth().signOut();
@@ -69,6 +70,14 @@
         setTimeout(() => {
             this.email = "45454"
         }, 2000);*/
+
+        function show_error() {
+            document.body.classList.add("error")
+        }
+
+        function hide_error() {
+            document.body.classList.remove("error")
+        }
     </script>
     <style>
         body {
@@ -107,6 +116,10 @@
         body:not(.loading) #loading {
             display:none;
         }
+        
+        #error {
+            color: red;
+        }
     </style>
 </head>
 
@@ -116,8 +129,9 @@
         <label for="email">email</label>
         <input type="email" name="email">
         <label for="password">password</label>
-        <input type="password" name="password">
+        <input type="password" name="password" onkeyup="hide_error()">
         <div><button type="submit">ENTER</button></div>
+        <label id="error">ERROR</label>
     </form>
     <form action="" id="logout" onsubmit="logout();return false">
         <!--<div v-scope="{
