@@ -50,10 +50,16 @@
         });
 
         function enter_f(t) {
+            if(!t.email.value) return t.email.focus()
+            if(!t.password.value) return t.password.focus()
             enter(t.email.value, t.password.value)
         }
         function enter(email, password) {
             firebase.auth().signInWithEmailAndPassword(email, password)
+                .then(function(r){
+                    if(r.user) window.location.href = "../"
+
+                })
                 .catch(function(error) { show_error() })
         }
         function logout() {
@@ -80,7 +86,9 @@
         }
     </script>
     <style>
-        body {
+        body,
+        input,
+        button {
             font-size: 26px;
             font-family: Garamond, serif;
         }
