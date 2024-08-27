@@ -331,6 +331,7 @@ xtext = {
                     }
                 }
             }
+            si[i] = si[i].replace(/(\-\-+\-)/g,"<line>$1</line>");
         }
         si = si.join("");
         if (fixed) {
