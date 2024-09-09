@@ -90,7 +90,7 @@ xtext = {
     },
     activate_links: function (s) {
         return s.replace(
-            /(((https?:\/\/|www\.|ftps?:\/\/)[^\s]+\.[^\s]+[^.,?!\s]))|((www\.|fb\.com\/|bit\.ly\/)[^\s,?!/]+[^\s,?!]|[^\s,?!/]@[^\s,?!/]+)/g,
+            /(((https?:\/\/|www\.|ftps?:\/\/)[^\s]+\.[^\s]+[^.,?!\s]))|((www\.|fb\.com\/|bit\.ly\/)[^\s,?!/]+[^\s,?!]|[a-zA-Z0-9.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]+)/g,
             '<l onclick="clicked()">$1$4</l>'
         );
     },
