@@ -183,7 +183,7 @@ xtext = {
             .replace(/_triangle/g, "△")
             .replace(/_fourier/g, "ℱ")
             .replace(/_laplace/g, "ℒ")
-            .replace(/\+-/g, "±")
+            .replace(/ \+-/g, " ±")
             .replace(/_pi/g, "π")
             .replace(/_h-bar/g, "ħ")
             .replace(/_h-bar2/g, "ℏ")
