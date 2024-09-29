@@ -94,6 +94,13 @@ xtext = {
             '<l onclick="clicked()">$1$4</l>'
         );
     },
+    shorten_links : function (s) {
+        s = s.replace(/(ali)(express\.com\/item)\//g,"<sv>$1</sv><nv>$2</nv><lv>/</lv>");
+        s = s.replace(/(f)(ace)(b)(ook\.com)\//g,"<sv>$1<nv>$2</nv>$3</sv><nv>$4</nv><lv>/</lv>");
+        s = s.replace(/>(https:\/\/(www\.|))/g,"><nv>$1</nv>");
+        s = s.replace(/(\.html)</g,"<nv>$1</nv><");
+        return s;
+    },
     style_fixed: function (f) {
         return f.replace(/frame(@\/[0-9]+\/@)/, '<div class="frame">$1</div>');
     },
@@ -267,6 +274,7 @@ xtext = {
             si[i] = this.price(si[i]);
             console.log("si[i]", si[i]);
             si[i] = this.activate_links(si[i]);
+            si[i] = this.shorten_links(si[i]);
             if (si[i][0] == "#") {
                 if (si[i][1] == "#")
                     si[i] = "<h4>" + si[i].replace(/##\s*/, "") + "</h4>";

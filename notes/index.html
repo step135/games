@@ -74,7 +74,7 @@
         }
 
         function clicked() {
-            var l = this.event.target.textContent;
+            var l = this.event.target.textContent.replace(/<[^>]+>/g,"");
             if (l.indexOf('http') === -1 && l.indexOf('ftp') === -1 && l[0] != '/') l = 'http://' + l;
             window.open('https://www.games-in-action.eu/l.html?url=' + encodeURIComponent(l) );
         }
@@ -211,6 +211,23 @@
 
         l:active {
             color: blue;
+        }
+
+        nv {
+            position: relative;
+            z-index: -1;
+            opacity: 0;
+            width: 0;
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        sv {
+            color: steelblue;
+        }
+        
+        lv {
+            color: lightgray;
         }
 
         #app:empty {
