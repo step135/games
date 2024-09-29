@@ -358,4 +358,98 @@ xtext = {
     o: function (t) {
         return this.format_text(t);
     },
+    optimize_text(s) {
+        if (!s) return s;
+        var del = this.cut_out_between(s, "```", "3");
+        s = del[0];
+        var cut_array = del[1];
+        while (s.match(/((\n|^)[-#][^\n]+\r?\n)\r?\n-/)) {
+            s = s.replace(/((\n|^)[-#*][^\n]+\r?\n)\r?\n-/g, "$1-");
+        }
+        var si = s
+            .replace(/\r/g, "")
+            .replace(/^\s+|\s+$/g, "")
+            .replace(
+                /url=([^\s&]+)/g,
+                function (a, a1) {
+                    return decodeURIComponent(a1);
+                }
+            )
+            .replace(
+                /(https:\/\/www\.temu\.com\/)\S+(-g-[0-9]+\.html)\S+?top_gallery_url=([^&]+)\S*[^,;:.\s]/g,
+                function (a, a1, a2, a3) {
+                    return a1 + a2 + " --- " + decodeURIComponent(a3);
+                }
+            )
+            .replace(
+                /\b(http.*?=|)(https?%3A%2F%2F[^&\s]+)(&.+|)\b/g,
+                function (a) {
+                    return decodeURIComponent(
+                        a.match(/https?%3A%2F%2F[^&\s]+/)
+                    );
+                }
+            )
+            .replace(/\bhttp[^\s]+\?url=(https?[^&\s]+)(&.+|)\b/g, "$1")
+            .replace(/\bhttp[^\s]+\/url\?q=(https?[^&\s]+)(&.+|)\b/g, "$1")
+            .replace(
+                /\bhttp[^\s]+\?[^\s]*url=(https?[^&\s]+)(&.+|)\b/g,
+                "$1"
+            )
+            .replace(/(http[^\s]+instagram\.com\/[^\s]+)\?[^\s]+/g, "$1")
+            .replace(/(marketplace\/item\/[^/?]+)[^\s]+/g, "$1/")
+            .replace(/(facebook\.com\/groups\/[^?\s]+)\?[^\s]+/g, "$1")
+            .replace(
+                /facebook\.com\/profile\.php\/?\?id=([0-9]+)[^\s0-9]*/g,
+                "facebook.com/$1"
+            )
+            .replace(
+                /(facebook\.com\/[^?\s/]+)\/?\?[^\s]*((groupid|profile_id)=[0-9]+)[^\s]*/g,
+                "$1?$2"
+            )
+            .replace(
+                /(facebook\.com\/[^?\s]+)\?(?!groupid|profile_id)[^\s]+/g,
+                "$1"
+            )
+            .replace(/(facebook\.com\/[^?\s]+)\/about[^\s]+/g, "$1")
+            .replace(
+                /(\?|&)(consent|sznclid|gclid|utm[^=]+|igshid|ref|wt_mc|si)=[^\s]+/g,
+                ""
+            )
+            .replace(/(https\:\/\/is\.cuni\.cz\S+)((tid)=[^&]+&?)/g, "$1")
+            .replace(/(https\:\/\/is\.cuni\.cz\S+)((id)=[^&]+&?)/g, "$1")
+            .replace(/(https\:\/\/is\.cuni\.cz\S+)((dlpar)=[^&]+&?)/g, "$1")
+            .replace(/([^&?]+=&)/g, "")
+            .replace(/\.html?[^\s]+/g, ".html")
+            .replace(/\?feature=share/g, "")
+            .replace(
+                /(\/[a-z.]+\.)(aliexpress\.com|ebay\.com|banggood\.com)/g,
+                "/$2"
+            )
+            .replace(/(www\.|m\.)facebook\.com/g, "fb.com")
+            .replace(/(twitter\.com.+)\?\S+/g, "$1")
+            .replace(
+                /aliexpress[^\s;:!]+productIds=([0-9]+)[^?\s;:!]+/g,
+                "aliexpress.com/item/$1.html"
+            )
+            .replace(
+                /((aliexpress|ebay|banggood)[^\s]+\/[0-9]+[^?\s]*)\?\S*/g,
+                "$1"
+            )
+            .replace(
+                /((amazon\.)[^\s]+\/[^?=]+)[?=]\S*/g,
+                "$1"
+            )
+            .replace(
+                /((\n|^)[-#*][^\n]+\r?\n\r?\n)(\r?\n\r?\n\r?\n|\r?\n\r?\n|\r?\n)/g,
+                "$1"
+            )
+            //.replace(/<[^\s][^>]*>/g, "")
+            .replace(/(\bhttp\S+)amazon\S+[&?]($|\s)/g, "$1$2") //-----spatne
+            .split("\n");
+        for (var i = 0; i < si.length; i++)
+            si[i] = si[i].replace(/^\s+|\s+$/g, "");
+        si = si.join("\n");
+        if (cut_array.length) si = this.add_cuts(si, cut_array, "3");
+        return si;
+    }
 };
