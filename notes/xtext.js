@@ -375,7 +375,7 @@ xtext = {
             .replace(/\r/g, "")
             .replace(/^\s+|\s+$/g, "")
             .replace(
-                /url=([^\s&]+)/g,
+                /http\S+[?&]url=([^\s&]+)/g,
                 function (a, a1) {
                     return decodeURIComponent(a1);
                 }
