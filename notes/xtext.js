@@ -423,7 +423,7 @@ xtext = {
             .replace(/(https\:\/\/is\.cuni\.cz\S+)((tid)=[^&]+&?)/g, "$1")
             .replace(/(https\:\/\/is\.cuni\.cz\S+)((id)=[^&]+&?)/g, "$1")
             .replace(/(https\:\/\/is\.cuni\.cz\S+)((dlpar)=[^&]+&?)/g, "$1")
-            .replace(/([^&?]+=&)/g, "")
+            .replace(/[^&?\s]+\=\&/g, "")
             .replace(/\.html?[^\s]+/g, ".html")
             .replace(/\?feature=share/g, "")
             .replace(
