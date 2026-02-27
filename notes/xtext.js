@@ -375,7 +375,7 @@ xtext = {
             .replace(/\r/g, "")
             .replace(/^\s+|\s+$/g, "")
             .replace(
-                /http\S+[?&]url=([^\s&]+)/g,
+                /http\S+[?&]url=([^\s&]+)[^.,:?\s]*/g,
                 function (a, a1) {
                     return decodeURIComponent(a1);
                 }
@@ -420,6 +420,7 @@ xtext = {
                 /(\?|&)(consent|sznclid|gclid|utm[^=]+|igshid|ref|wt_mc|si)=[^\s]+/g,
                 ""
             )
+            .replace(/(https\:\/\/is\.muni\.cz\S+)\?[^\s?!]+/g, "$1")
             .replace(/(https\:\/\/is\.cuni\.cz\S+)((tid)=[^&]+&?)/g, "$1")
             .replace(/(https\:\/\/is\.cuni\.cz\S+)((id)=[^&]+&?)/g, "$1")
             .replace(/(https\:\/\/is\.cuni\.cz\S+)((dlpar)=[^&]+&?)/g, "$1")
@@ -431,8 +432,8 @@ xtext = {
                 "google.com/search?q=$1"
             )
             .replace(
-                /(\/[a-z.]+\.)(aliexpress\.com|ebay\.com|banggood\.com|google\.com)/g,
-                "/$2"
+                /\/(?!docs\.|maps\.)(?:[a-z.]+\.)(aliexpress\.com|ebay\.com|banggood\.com|google\.com)/g,
+                "/$1"
             )
             .replace(/(www\.|m\.)facebook\.com/g, "fb.com")
             .replace(/(twitter\.com.+)\?\S+/g, "$1")
